@@ -1,0 +1,14 @@
+@model Appointment
+@{
+    ViewData["Title"] = "Cancel Appointment";
+}
+
+<div class="form-card">
+    <h4 class="text-warning"><i class="bi bi-x-circle me-2"></i>Cancel Appointment</h4>
+    <p>Cancel appointment for <strong>@Model.Patient.FullName</strong> with <strong>@Model.Doctor.FullName</strong> on @Model.AppointmentDate.ToString("MMM dd, yyyy")?</p>
+    <form asp-action="Cancel" method="post">
+        <input type="hidden" asp-for="AppointmentId" />
+        <button type="submit" class="btn btn-warning">Confirm Cancel</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </form>
+</div>

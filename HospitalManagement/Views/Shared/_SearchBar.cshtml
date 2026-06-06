@@ -1,0 +1,16 @@
+@{
+    var search = ViewBag.Search as string ?? "";
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<form method="get" class="search-bar mb-4">
+    <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" name="search" class="form-control" placeholder="Search..." value="@search" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        @if (!string.IsNullOrEmpty(search))
+        {
+            <a asp-controller="@controller" asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+        }
+    </div>
+</form>

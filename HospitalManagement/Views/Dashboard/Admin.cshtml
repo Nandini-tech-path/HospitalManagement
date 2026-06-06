@@ -1,0 +1,108 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon blue"><i class="bi bi-people"></i></div>
+            <div class="stat-card-value">@Model.TotalPatients</div>
+            <div class="stat-card-label">Total Patients</div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon green"><i class="bi bi-person-badge"></i></div>
+            <div class="stat-card-value">@Model.TotalDoctors</div>
+            <div class="stat-card-label">Total Doctors</div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon orange"><i class="bi bi-calendar-check"></i></div>
+            <div class="stat-card-value">@Model.TodayAppointments</div>
+            <div class="stat-card-label">Today's Appointments</div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon purple"><i class="bi bi-currency-dollar"></i></div>
+            <div class="stat-card-value">$@Model.TotalRevenue.ToString("N0")</div>
+            <div class="stat-card-label">Total Revenue</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-graph-up text-primary"></i> Revenue (Last 7 Days)</h5>
+            <canvas id="revenueChart" height="200"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-calendar3 text-primary"></i> Appointments (Last 7 Days)</h5>
+            <canvas id="appointmentChart" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="data-card">
+            <div class="data-card-header">
+                <h5><i class="bi bi-people"></i> Recent Patients</h5>
+                <a asp-controller="Patients" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table data-table mb-0">
+                    <thead><tr><th>Name</th><th>Age</th><th>Registered</th></tr></thead>
+                    <tbody>
+                        @foreach (var p in Model.RecentPatients)
+                        {
+                            <tr>
+                                <td>@p.FullName</td>
+                                <td>@p.Age</td>
+                                <td>@p.RegistrationDate.ToString("MMM dd, yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="data-card">
+            <div class="data-card-header">
+                <h5><i class="bi bi-calendar-check"></i> Recent Appointments</h5>
+                <a asp-controller="Appointments" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table data-table mb-0">
+                    <thead><tr><th>Patient</th><th>Doctor</th><th>Status</th></tr></thead>
+                    <tbody>
+                        @foreach (var a in Model.RecentAppointments)
+                        {
+                            <tr>
+                                <td>@a.PatientName</td>
+                                <td>@a.DoctorName</td>
+                                <td><span class="badge-status badge-@a.Status.ToLower()">@a.Status</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    createChart('revenueChart', 'bar', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RevenueLabels)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RevenueData)), 'Revenue ($)');
+    createChart('appointmentChart', 'line', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AppointmentLabels)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AppointmentData)), 'Appointments', 'rgba(40, 167, 69, 0.6)');
+</script>
+}

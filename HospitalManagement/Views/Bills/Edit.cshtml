@@ -1,0 +1,28 @@
+@model Bill
+@{
+    ViewData["Title"] = "Edit Bill";
+}
+
+<div class="form-card">
+    <h4 class="form-section-title"><i class="bi bi-pencil me-2"></i>Edit Bill #@Model.BillId</h4>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="BillId" />
+        <input type="hidden" asp-for="AppointmentId" />
+        <input type="hidden" asp-for="PatientId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="row g-3">
+            <div class="col-md-4"><div class="form-floating"><input asp-for="ConsultationFee" class="form-control" type="number" step="0.01" /><label asp-for="ConsultationFee"></label></div></div>
+            <div class="col-md-4"><div class="form-floating"><input asp-for="MedicineCharges" class="form-control" type="number" step="0.01" /><label asp-for="MedicineCharges"></label></div></div>
+            <div class="col-md-4"><div class="form-floating"><input asp-for="OtherCharges" class="form-control" type="number" step="0.01" /><label asp-for="OtherCharges"></label></div></div>
+            <div class="col-md-6"><div class="form-floating"><select asp-for="PaymentStatus" class="form-select" asp-items="ViewBag.PaymentStatusList"></select><label asp-for="PaymentStatus"></label></div></div>
+            <div class="col-md-6"><div class="form-floating"><input asp-for="PaymentDate" class="form-control" type="date" /><label asp-for="PaymentDate"></label></div></div>
+            <div class="col-12"><div class="alert alert-info"><strong>Total:</strong> $@Model.TotalAmount.ToString("N2")</div></div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

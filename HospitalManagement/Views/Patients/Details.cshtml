@@ -1,0 +1,48 @@
+@model Patient
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+<div class="data-card mb-4">
+    <div class="data-card-header">
+        <h5><i class="bi bi-person"></i> @Model.FullName</h5>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.PatientId" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i> Edit</a>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Back</a>
+        </div>
+    </div>
+    <div class="p-4">
+        <div class="row g-3">
+            <div class="col-md-4"><strong>Age:</strong> @Model.Age</div>
+            <div class="col-md-4"><strong>Gender:</strong> @Model.Gender</div>
+            <div class="col-md-4"><strong>Blood Group:</strong> @(Model.BloodGroup ?? "N/A")</div>
+            <div class="col-md-4"><strong>Phone:</strong> @Model.PhoneNumber</div>
+            <div class="col-md-4"><strong>Email:</strong> @(Model.Email ?? "N/A")</div>
+            <div class="col-md-4"><strong>Registered:</strong> @Model.RegistrationDate.ToString("MMM dd, yyyy")</div>
+            <div class="col-12"><strong>Address:</strong> @(Model.Address ?? "N/A")</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Appointments.Any())
+{
+    <div class="data-card mb-4">
+        <div class="data-card-header"><h5><i class="bi bi-calendar-check"></i> Appointments</h5></div>
+        <div class="table-responsive">
+            <table class="table data-table mb-0">
+                <thead><tr><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+                <tbody>
+                    @foreach (var a in Model.Appointments.OrderByDescending(x => x.AppointmentDate))
+                    {
+                        <tr>
+                            <td>@a.Doctor.FullName</td>
+                            <td>@a.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                            <td>@a.AppointmentTime.ToString(@"hh\:mm")</td>
+                            <td><span class="badge-status badge-@a.Status.ToLower()">@a.Status</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

@@ -1,0 +1,46 @@
+@model IEnumerable<Doctor>
+@{
+    ViewData["Title"] = "Doctors";
+}
+
+<div class="data-card">
+    <div class="data-card-header">
+        <h5><i class="bi bi-person-badge"></i> Doctor List <span class="text-muted fw-normal">(@ViewBag.TotalCount total)</span></h5>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Doctor</a>
+    </div>
+    <div class="p-3">
+        <partial name="_SearchBar" />
+        <div class="table-responsive">
+            <table class="table data-table">
+                <thead>
+                    <tr>
+                        <th><a asp-action="Index" asp-route-sort="name" asp-route-sortDesc="@(ViewBag.Sort == "name" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Name</a></th>
+                        <th><a asp-action="Index" asp-route-sort="specialization" asp-route-sortDesc="@(ViewBag.Sort == "specialization" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Specialization</a></th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th><a asp-action="Index" asp-route-sort="experience" asp-route-sortDesc="@(ViewBag.Sort == "experience" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Experience</a></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.FullName</strong></td>
+                            <td><span class="badge bg-primary bg-opacity-10 text-primary">@item.Specialization</span></td>
+                            <td>@item.Email</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>@item.ExperienceYears yrs</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.DoctorId" class="btn btn-sm btn-outline-primary btn-action"><i class="bi bi-eye"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.DoctorId" class="btn btn-sm btn-outline-secondary btn-action"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.DoctorId" class="btn btn-sm btn-outline-danger btn-action"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" />
+    </div>
+</div>

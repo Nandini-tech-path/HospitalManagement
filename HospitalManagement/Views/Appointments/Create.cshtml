@@ -1,0 +1,47 @@
+@model Appointment
+@{
+    ViewData["Title"] = "Schedule Appointment";
+}
+
+<div class="form-card">
+    <h4 class="form-section-title"><i class="bi bi-calendar-plus me-2"></i>Schedule Appointment</h4>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <select asp-for="PatientId" class="form-select" asp-items="ViewBag.PatientId"></select>
+                    <label asp-for="PatientId">Patient</label>
+                    <span asp-validation-for="PatientId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <select asp-for="DoctorId" class="form-select" asp-items="ViewBag.DoctorId"></select>
+                    <label asp-for="DoctorId">Doctor</label>
+                    <span asp-validation-for="DoctorId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input asp-for="AppointmentDate" class="form-control" type="date" />
+                    <label asp-for="AppointmentDate"></label>
+                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input asp-for="AppointmentTime" class="form-control" type="time" />
+                    <label asp-for="AppointmentTime"></label>
+                    <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Schedule</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

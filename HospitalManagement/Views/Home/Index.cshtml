@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+
+<nav class="landing-nav">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <a class="landing-brand" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-hospital"></i> MediCare HMS
+            </a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-hero-primary">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Staff Login
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title">Hospital Management System</h1>
+                <p class="hero-subtitle">Trusted healthcare platform for patient care, appointments, billing, and clinical operations. Secure, reliable, and built for modern hospitals.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-hero btn-hero-primary">
+                        <i class="bi bi-shield-lock me-2"></i>Secure Login
+                    </a>
+                    <a href="#features" class="btn btn-hero btn-hero-outline">
+                        <i class="bi bi-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center d-none d-lg-block">
+                <i class="bi bi-heart-pulse hero-illustration"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">@ViewBag.TotalPatients+</div>
+                <div class="stat-label">Registered Patients</div>
+            </div>
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">@ViewBag.TotalDoctors</div>
+                <div class="stat-label">Expert Doctors</div>
+            </div>
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">@ViewBag.TotalAppointments</div>
+                <div class="stat-label">Appointments Managed</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Comprehensive Healthcare Management</h2>
+            <p class="text-muted">Everything your hospital needs in one secure platform</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-people"></i></div>
+                    <h5>Patient Management</h5>
+                    <p class="text-muted mb-0">Register, track, and manage patient records with complete medical history.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-calendar-check"></i></div>
+                    <h5>Appointment Scheduling</h5>
+                    <p class="text-muted mb-0">Efficient scheduling with real-time status tracking for doctors and staff.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-receipt"></i></div>
+                    <h5>Billing & Payments</h5>
+                    <p class="text-muted mb-0">Generate bills, track payments, and manage hospital revenue seamlessly.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                    <h5>Secure Authentication</h5>
+                    <p class="text-muted mb-0">Role-based access control for admins, doctors, and receptionists.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-bar-chart-line"></i></div>
+                    <h5>Analytics & Reports</h5>
+                    <p class="text-muted mb-0">Visual dashboards and reports powered by real-time hospital data.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-cloud"></i></div>
+                    <h5>Azure Ready</h5>
+                    <p class="text-muted mb-0">Deploy to Azure VM and Azure SQL Database with backup and recovery.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="landing-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="bi bi-hospital me-2"></i>MediCare HMS</h5>
+                <p>Professional Hospital Management System built with ASP.NET Core MVC and Azure cloud readiness.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p>&copy; @DateTime.Now.Year MediCare Hospital Management System</p>
+                <p class="mb-0"><i class="bi bi-envelope me-1"></i> support@medicare-hms.com</p>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,51 @@
+@model IEnumerable<Patient>
+@{
+    ViewData["Title"] = "Patients";
+}
+
+<div class="data-card">
+    <div class="data-card-header">
+        <h5><i class="bi bi-people"></i> Patient List <span class="text-muted fw-normal">(@ViewBag.TotalCount total)</span></h5>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Patient</a>
+    </div>
+    <div class="p-3">
+        <partial name="_SearchBar" />
+        <div class="table-responsive">
+            <table class="table data-table">
+                <thead>
+                    <tr>
+                        <th><a asp-action="Index" asp-route-sort="name" asp-route-sortDesc="@(ViewBag.Sort == "name" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Name</a></th>
+                        <th>Age</th>
+                        <th><a asp-action="Index" asp-route-sort="gender" asp-route-sortDesc="@(ViewBag.Sort == "gender" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Gender</a></th>
+                        <th>Phone</th>
+                        <th>Blood Group</th>
+                        <th><a asp-action="Index" asp-route-sort="date" asp-route-sortDesc="@(ViewBag.Sort == "date" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Registered</a></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.FullName</strong></td>
+                            <td>@item.Age</td>
+                            <td>@item.Gender</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>@(item.BloodGroup ?? "N/A")</td>
+                            <td>@item.RegistrationDate.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.PatientId" class="btn btn-sm btn-outline-primary btn-action"><i class="bi bi-eye"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.PatientId" class="btn btn-sm btn-outline-secondary btn-action"><i class="bi bi-pencil"></i></a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.PatientId" class="btn btn-sm btn-outline-danger btn-action"><i class="bi bi-trash"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" />
+    </div>
+</div>

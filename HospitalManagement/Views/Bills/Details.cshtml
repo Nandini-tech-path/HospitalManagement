@@ -1,0 +1,33 @@
+@model Bill
+@{
+    ViewData["Title"] = "Bill Details";
+}
+
+<div class="data-card">
+    <div class="data-card-header">
+        <h5><i class="bi bi-receipt"></i> Bill #@Model.BillId</h5>
+        <div>
+            <a asp-action="Print" asp-route-id="@Model.BillId" class="btn btn-sm btn-primary" target="_blank"><i class="bi bi-printer"></i> Print</a>
+            <a asp-action="Edit" asp-route-id="@Model.BillId" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Back</a>
+        </div>
+    </div>
+    <div class="p-4">
+        <div class="row g-3 mb-4">
+            <div class="col-md-6"><strong>Patient:</strong> @Model.Patient.FullName</div>
+            <div class="col-md-6"><strong>Doctor:</strong> @Model.Appointment.Doctor.FullName</div>
+            <div class="col-md-6"><strong>Appointment Date:</strong> @Model.Appointment.AppointmentDate.ToString("MMM dd, yyyy")</div>
+            <div class="col-md-6"><strong>Payment Status:</strong> <span class="badge-status badge-@Model.PaymentStatus.ToLower()">@Model.PaymentStatus</span></div>
+        </div>
+        <table class="table">
+            <tr><td>Consultation Fee</td><td class="text-end">$@Model.ConsultationFee.ToString("N2")</td></tr>
+            <tr><td>Medicine Charges</td><td class="text-end">$@Model.MedicineCharges.ToString("N2")</td></tr>
+            <tr><td>Other Charges</td><td class="text-end">$@Model.OtherCharges.ToString("N2")</td></tr>
+            <tr class="fw-bold"><td>Total Amount</td><td class="text-end">$@Model.TotalAmount.ToString("N2")</td></tr>
+        </table>
+        @if (Model.PaymentDate.HasValue)
+        {
+            <p class="text-muted mb-0">Payment Date: @Model.PaymentDate.Value.ToString("MMM dd, yyyy")</p>
+        }
+    </div>
+</div>

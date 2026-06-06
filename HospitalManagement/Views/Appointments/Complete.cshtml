@@ -1,0 +1,14 @@
+@model Appointment
+@{
+    ViewData["Title"] = "Complete Appointment";
+}
+
+<div class="form-card">
+    <h4 class="text-success"><i class="bi bi-check-circle me-2"></i>Complete Appointment</h4>
+    <p>Mark appointment for <strong>@Model.Patient.FullName</strong> with <strong>@Model.Doctor.FullName</strong> as completed?</p>
+    <form asp-action="Complete" method="post">
+        <input type="hidden" asp-for="AppointmentId" />
+        <button type="submit" class="btn btn-success">Mark Completed</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </form>
+</div>

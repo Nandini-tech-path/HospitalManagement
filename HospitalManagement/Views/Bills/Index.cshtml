@@ -1,0 +1,53 @@
+@model IEnumerable<Bill>
+@{
+    ViewData["Title"] = "Billing";
+}
+
+<div class="data-card">
+    <div class="data-card-header">
+        <h5><i class="bi bi-receipt"></i> Bills <span class="text-muted fw-normal">(@ViewBag.TotalCount total)</span></h5>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Generate Bill</a>
+    </div>
+    <div class="p-3">
+        <partial name="_SearchBar" />
+        <div class="table-responsive">
+            <table class="table data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><a asp-action="Index" asp-route-sort="patient" asp-route-sortDesc="@(ViewBag.Sort == "patient" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Patient</a></th>
+                        <th>Doctor</th>
+                        <th><a asp-action="Index" asp-route-sort="amount" asp-route-sortDesc="@(ViewBag.Sort == "amount" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Total</a></th>
+                        <th><a asp-action="Index" asp-route-sort="status" asp-route-sortDesc="@(ViewBag.Sort == "status" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Payment</a></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.BillId</td>
+                            <td><strong>@item.Patient.FullName</strong></td>
+                            <td>@item.Appointment.Doctor.FullName</td>
+                            <td>$@item.TotalAmount.ToString("N2")</td>
+                            <td><span class="badge-status badge-@item.PaymentStatus.ToLower()">@item.PaymentStatus</span></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.BillId" class="btn btn-sm btn-outline-primary btn-action"><i class="bi bi-eye"></i></a>
+                                <a asp-action="Print" asp-route-id="@item.BillId" class="btn btn-sm btn-outline-secondary btn-action" target="_blank"><i class="bi bi-printer"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.BillId" class="btn btn-sm btn-outline-secondary btn-action"><i class="bi bi-pencil"></i></a>
+                                @if (item.PaymentStatus == "Pending")
+                                {
+                                    <form asp-action="MarkPaid" asp-route-id="@item.BillId" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-success btn-action" title="Mark Paid"><i class="bi bi-cash"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" />
+    </div>
+</div>

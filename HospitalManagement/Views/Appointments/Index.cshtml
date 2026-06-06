@@ -1,0 +1,55 @@
+@model IEnumerable<Appointment>
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<div class="data-card">
+    <div class="data-card-header">
+        <h5><i class="bi bi-calendar-check"></i> Appointments <span class="text-muted fw-normal">(@ViewBag.TotalCount total)</span></h5>
+        @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+        {
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Schedule</a>
+        }
+    </div>
+    <div class="p-3">
+        <partial name="_SearchBar" />
+        <div class="table-responsive">
+            <table class="table data-table">
+                <thead>
+                    <tr>
+                        <th><a asp-action="Index" asp-route-sort="patient" asp-route-sortDesc="@(ViewBag.Sort == "patient" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Patient</a></th>
+                        <th><a asp-action="Index" asp-route-sort="doctor" asp-route-sortDesc="@(ViewBag.Sort == "doctor" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Doctor</a></th>
+                        <th><a asp-action="Index" asp-route-sort="date" asp-route-sortDesc="@(ViewBag.Sort == "date" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Date</a></th>
+                        <th>Time</th>
+                        <th><a asp-action="Index" asp-route-sort="status" asp-route-sortDesc="@(ViewBag.Sort == "status" && !ViewBag.SortDesc)" asp-route-search="@ViewBag.Search">Status</a></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.Patient.FullName</strong></td>
+                            <td>@item.Doctor.FullName</td>
+                            <td>@item.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                            <td>@item.AppointmentTime.ToString(@"hh\:mm")</td>
+                            <td><span class="badge-status badge-@item.Status.ToLower()">@item.Status</span></td>
+                            <td>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-secondary btn-action"><i class="bi bi-pencil"></i></a>
+                                }
+                                @if (item.Status == "Scheduled")
+                                {
+                                    <a asp-action="Complete" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-success btn-action" title="Complete"><i class="bi bi-check-circle"></i></a>
+                                    <a asp-action="Cancel" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-danger btn-action" title="Cancel"><i class="bi bi-x-circle"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" />
+    </div>
+</div>

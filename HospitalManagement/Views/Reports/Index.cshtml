@@ -1,0 +1,102 @@
+@model ReportsViewModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-card-icon blue"><i class="bi bi-people"></i></div>
+            <div class="stat-card-value">@Model.TotalPatients</div>
+            <div class="stat-card-label">Total Patients</div>
+            <small class="text-muted">@Model.RecentRegistrations new in last 7 days</small>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-card-icon green"><i class="bi bi-person-badge"></i></div>
+            <div class="stat-card-value">@Model.TotalDoctors</div>
+            <div class="stat-card-label">Total Doctors</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-card-icon orange"><i class="bi bi-pie-chart"></i></div>
+            <div class="stat-card-value">@Model.DoctorDistribution.Count</div>
+            <div class="stat-card-label">Specializations</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-calendar3"></i> Daily Appointments (7 Days)</h5>
+            <canvas id="dailyApptChart"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-calendar-month"></i> Monthly Appointments</h5>
+            <canvas id="monthlyApptChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-currency-dollar"></i> Daily Revenue (7 Days)</h5>
+            <canvas id="dailyRevChart"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-graph-up"></i> Monthly Revenue</h5>
+            <canvas id="monthlyRevChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h5><i class="bi bi-pie-chart"></i> Doctor Distribution by Specialization</h5>
+            <canvas id="doctorDistChart"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    createChart('dailyApptChart', 'bar',
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DailyAppointmentLabels)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DailyAppointmentData)), 'Appointments');
+    createChart('monthlyApptChart', 'line',
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyAppointmentLabels)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyAppointmentData)), 'Appointments', 'rgba(26, 95, 158, 0.6)');
+    createChart('dailyRevChart', 'bar',
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DailyRevenueLabels)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DailyRevenueData)), 'Revenue ($)', 'rgba(40, 167, 69, 0.7)');
+    createChart('monthlyRevChart', 'line',
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyRevenueLabels)),
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyRevenueData)), 'Revenue ($)', 'rgba(40, 167, 69, 0.6)');
+
+    const distLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DoctorDistribution.Keys.ToList()));
+    const distData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DoctorDistribution.Values.ToList()));
+    const canvas = document.getElementById('doctorDistChart');
+    if (canvas) {
+        new Chart(canvas.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: distLabels,
+                datasets: [{
+                    data: distData,
+                    backgroundColor: ['#1a5f9e','#28a745','#f59e0b','#8b5cf6','#ef4444','#06b6d4']
+                }]
+            },
+            options: { responsive: true }
+        });
+    }
+</script>
+}
